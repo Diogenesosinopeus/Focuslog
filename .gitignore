@@ -1,0 +1,19 @@
+# Personal Focuslog data
+focuslog-data.json
+focuslog-data.backup.json
+focuslog-data.tmp.json
+focuslog-status.json
+backups/
+
+# Runtime and editor files
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.env
+.env.*
+*.pem
+*.key
+

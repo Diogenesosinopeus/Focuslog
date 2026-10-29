@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827" />
+  <title>专注度计时 · Focuslog</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">◒</span><span>Focuslog</span></div>
+      <nav>
+        <button class="nav-item active" data-view="today"><span>◷</span> 今日专注</button>
+        <button class="nav-item" data-view="history"><span>▤</span> 全部记录</button>
+        <button class="nav-item" data-view="completed"><span>✓</span> 已完成清单</button>
+        <button class="nav-item" data-view="stats"><span>▥</span> 统计分析</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="nav-item" id="exportSidebar"><span>↥</span> 导出 Obsidian</button>
+        <div class="storage-note" id="storageStatus"><span class="dot"></span><div><strong id="storageTitle">本地保存</strong><small id="storageDetail">正在连接同步服务</small></div></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><p class="eyebrow" id="pageEyebrow">专注工作台</p><h1 id="pageTitle">今天，专注于重要的事</h1></div>
+        <div class="top-actions"><button class="icon-button" id="themeToggle" title="切换主题">☼</button><button class="avatar">F</button></div>
+      </header>
+
+      <section class="view active" id="todayView">
+        <div class="hero-grid">
+          <section class="timer-card">
+            <div class="card-head"><span class="live-label"><i></i> <span id="timerState">准备开始</span></span><span class="date-label" id="todayLabel"></span></div>
+            <div class="timer-ring" id="timerRing"><div class="timer-inner"><div class="timer-time" id="timerDisplay">00:00:00</div><div class="timer-mode" id="timerMode">自由计时</div></div></div>
+            <div class="timer-controls"><button class="primary-button" id="startButton">开始专注</button></div>
+          </section>
+          <section class="quick-card">
+            <div class="section-heading"><div><span class="section-kicker">今日概览</span><h2>把时间用在值得的地方</h2></div><span class="sun">✦</span></div>
+            <div class="today-number"><strong id="todayMinutes">0</strong><span>分钟专注</span></div>
+            <div class="progress-bar"><span id="todayProgress"></span></div>
+            <div class="meta-row"><span>目标 4 小时</span><span id="todayPercent">0%</span></div>
+            <div class="mini-stats"><div><strong id="todaySessions">0</strong><span>完成时段</span></div><div><strong id="todayLongest">—</strong><span>最长时段</span></div><div><strong id="todayStreak">0</strong><span>连续天数</span></div></div>
+          </section>
+        </div>
+
+        <section class="panel todo-panel"><div class="panel-title"><div><span class="section-kicker">Today's plan</span><h2>待办清单</h2></div><span class="todo-summary" id="todoSummary">0 / 0 已完成</span></div><form class="todo-form" id="todoForm"><input id="todoInput" maxlength="120" autocomplete="off" placeholder="添加今天要完成的计划……" /><button class="primary-button small" type="submit">添加</button></form><div id="todoList" class="todo-list"></div></section>
+
+        <section class="lower-grid"><div class="panel recent-panel"><div class="panel-title"><div><span class="section-kicker">Timeline</span><h2>今日时间线</h2></div><button class="text-button" data-view-target="history">查看全部 →</button></div><div id="recentList" class="record-list"></div></div><div class="panel note-panel"><div class="panel-title"><div><span class="section-kicker">Daily note</span><h2>今日备注</h2></div></div><textarea id="dailyNote" placeholder="记录今天的状态、灵感或复盘……"></textarea><div class="note-footer"><span id="noteSaved">自动保存</span><button class="small-button" id="saveNote">保存备注</button></div></div></section>
+      </section>
+
+      <section class="view" id="historyView"><div class="view-intro"><div><span class="section-kicker">Archive</span><h2>全部记录</h2><p>每一个完成的时段，都值得被看见。</p></div><button class="primary-button small" id="exportHistory">导出 Markdown</button></div><section class="panel history-activity"><div class="panel-title"><div><span class="section-kicker">Activity</span><h2>专注活动</h2></div><div class="range-tabs"><button class="range-tab active" data-range="daily">每天</button><button class="range-tab" data-range="weekly">每周</button><button class="range-tab" data-range="total">累计总量</button></div></div><div id="activityChart" class="activity-chart"></div><div class="activity-footer"><span id="activitySummary" class="activity-summary"></span><div class="chart-legend"><span>少</span><i class="level l0"></i><i class="level l1"></i><i class="level l2"></i><i class="level l3"></i><i class="level l4"></i><span>多</span></div></div></section><div class="filter-row history-filters"><button class="filter active" data-filter="all">全部</button><button class="filter" data-filter="today">今天</button><button class="filter" data-filter="week">近 7 天</button><button class="filter" data-filter="month">本月</button><input id="searchRecords" type="search" placeholder="搜索标签或备注" /></div><div class="panel history-records-panel"><div id="historyList" class="history-list"></div></div></section>
+
+      <section class="view" id="completedView"><div class="view-intro"><div><span class="section-kicker">Completed</span><h2>已完成清单</h2><p>完成的计划按日期归档，留下每天前进的痕迹。</p></div><span class="completed-total" id="completedTotal">0 项完成</span></div><div id="completedGroups" class="completed-groups"></div></section>
+
+      <section class="view" id="statsView"><div class="view-intro"><div><span class="section-kicker">Insights</span><h2>统计分析</h2><p>从日、周、月三个尺度，看见你的节奏。</p></div></div><div class="stats-cards"><div class="stat-card"><span>今日</span><strong id="statToday">0m</strong><small id="statTodaySub">0 个时段</small></div><div class="stat-card"><span>本周</span><strong id="statWeek">0h</strong><small id="statWeekSub">平均每天 0m</small></div><div class="stat-card"><span>本月</span><strong id="statMonth">0h</strong><small id="statMonthSub">0 个时段</small></div><div class="stat-card accent"><span>累计专注</span><strong id="statAll">0h</strong><small>保持自己的节奏</small></div></div><div class="panel stats-panel"><div class="panel-title"><div><span class="section-kicker">Monthly rhythm</span><h2>月度时长</h2></div></div><div id="monthBars" class="month-bars"></div></div></section>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="editRecordModal" hidden><div class="modal-card"><div class="modal-head"><div><span class="section-kicker">Edit session</span><h2>修改时间段</h2></div><button class="modal-close" data-close-modal="editRecordModal" aria-label="关闭">×</button></div><form id="editRecordForm"><div class="form-field"><label for="editDate">日期</label><input id="editDate" type="date" required /></div><div class="form-grid"><div class="form-field"><label for="editStart">开始时间</label><input id="editStart" type="time" step="1" required /></div><div class="form-field"><label for="editEnd">结束时间</label><input id="editEnd" type="time" step="1" required /></div></div><div class="form-field"><label for="editNote">备注</label><input id="editNote" maxlength="120" placeholder="可选" /></div><p class="form-error" id="editRecordError"></p><div class="modal-actions"><button type="button" class="secondary-button" data-close-modal="editRecordModal">取消</button><button type="submit" class="primary-button">确认保存</button></div></form></div></div>
+  <div class="modal-backdrop" id="deleteRecordModal" hidden><div class="modal-card confirm-card"><div class="confirm-icon">!</div><h2>删除这个时间段？</h2><p id="deleteRecordDescription">删除后将从统计和导出中移除。</p><div class="modal-actions"><button type="button" class="secondary-button" data-close-modal="deleteRecordModal">取消</button><button type="button" class="danger-button" id="confirmDeleteRecord">确认删除</button></div></div></div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
